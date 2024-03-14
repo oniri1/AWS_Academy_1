@@ -3,19 +3,27 @@ const main = document.getElementById("main");
 //맨 윗줄에 div로
 
 class Makers {
-  headBar = document.createElement("div");
-
-  //배열로 받은 str을 요소 이름으로 반환
-  arrDiv(divName) {
+  className;
+  classNameArr;
+  //배열로 받은 str을 요소 이름으로 반환하여 리턴
+  arrDiv(divName, className) {
+    this.classNameArr = className;
     const test = divName.map((divName) => {
       const divNameEle = document.createElement("div");
-      console.log("divname", divName);
+      console.log("className", this.classNameArr);
       divNameEle.id = `${divName}`;
+
+      if (this.classNameArr != undefined) {
+        divNameEle.classList.add(this.classNameArr);
+        console.log("작동함?");
+      }
+      console.log("요소!!!!", divNameEle);
       return divNameEle;
     });
     return test;
   }
-  makeIdDiv(rootName, divName) {
+  makeIdDiv(rootName, divName, className) {
+    this.className = className;
     //값을 입력하지 않았을 시 종료
     if (rootName == undefined && divName == undefined) {
       console.log("nothing get");
@@ -34,11 +42,11 @@ class Makers {
       //루트 이름을 널 혹은 언디파인 넣을 시
       if (rootName == undefined) {
         rootName = divName;
-        console.log("이상한 값 넣지마 그래도 보디에 추가는 해줬다", divName);
+        console.log("보디안 요소에 클래스 넣기", className);
       }
       //배열로 받을 시
       if (Array.isArray(rootName)) {
-        const arrDiv = this.arrDiv(rootName);
+        const arrDiv = this.arrDiv(rootName, className);
 
         arrDiv.reverse();
         arrDiv.forEach((element) => {
@@ -49,7 +57,9 @@ class Makers {
       else {
         const divNameEle = document.createElement("div");
         divNameEle.id = `${rootName}`;
-
+        if (this.className != undefined) {
+          divNameEle.classList.add(this.className);
+        }
         body.prepend(divNameEle);
       }
 
@@ -57,6 +67,7 @@ class Makers {
       body.prepend();
       return;
     } else {
+      //정상작동시 코드
       //자식을 가질 부모의 이름
       const rootNameEle = document.getElementById(`${rootName}`);
       if (rootNameEle == undefined) {
@@ -66,7 +77,7 @@ class Makers {
 
       //자식을 배열로 받을 시
       if (Array.isArray(divName)) {
-        const arrDiv = this.arrDiv(divName);
+        const arrDiv = this.arrDiv(divName, className);
 
         arrDiv.forEach((element) => {
           rootNameEle.append(element);
@@ -76,27 +87,53 @@ class Makers {
       else {
         const divNameEle = document.createElement("div");
         divNameEle.id = `${divName}`;
+        if (this.className != undefined) {
+          divNameEle.classList.add(this.className);
+        }
 
         rootNameEle.append(divNameEle);
       }
     }
-    console.log("부모이름 자식이름", rootName, divName);
+    // console.log("부모이름 자식이름", rootName, divName);
+    this.className = undefined;
     return;
   }
 }
 
 const makers = new Makers();
 
-let arr = ["menu-toggle-Switch", "logo", "searchBar"];
-
 // makers.makeIdDiv(arr);
 
+//메뉴
 makers.makeIdDiv("main");
-makers.makeIdDiv("main", "head-bar");
+//헤드바
+makers.makeIdDiv("main", ["head-bar", "body-bar"]);
+//왼쪽 중앙 오른쪽 박스
+makers.makeIdDiv("head-bar", ["left-box", "center-box", "right-box"]);
 
-// makers.makeIdDiv("head-bar", "menu-toggle-Switch");
-// makers.makeIdDiv("head-bar", "logo");
-// makers.makeIdDiv("head-bar", "searchBar");
-makers.makeIdDiv("head-bar", arr);
+//왼쪽 박스
+makers.makeIdDiv("left-box", ["menu-toggle-Switch", "logo"]);
+//중앙 박스
+makers.makeIdDiv("center-box", ["searchBar", "mike-logo"]);
+//중앙 서치바
+makers.makeIdDiv("searchBar", ["search", "search-bar-logo"]);
 
-makers.makeIdDiv("searchBar", "search-bar-logo");
+//오른쪽 박스
+makers.makeIdDiv("right-box", ["option", "login"]);
+makers.makeIdDiv("login", "login-text");
+document.getElementById("login-text").innerText = "로그인";
+
+//왼쪽 메뉴바
+makers.makeIdDiv("body-bar", "left-side-bar");
+
+makers.makeIdDiv(
+  "left-side-bar",
+  ["home", "shorts", "subscribe", "my", "log"],
+  "side-boxs"
+);
+
+const sideBoxs = document.getElementsByClassName("side-boxs");
+
+for (let i = 0; i < sideBoxs.length; i++) {
+  sideBoxs[i].innerText = sideBoxs[i].id;
+}

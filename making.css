@@ -1,5 +1,4 @@
 * {
-  border: 1px solid green;
   box-sizing: border-box;
 }
 
@@ -7,46 +6,154 @@
   width: 100%;
   height: 100%;
   border: 2px solid black;
+
+  gap: 5px;
+  overflow: auto;
 }
 
 /* 헤더바 */
 #head-bar {
   width: 100%;
-  height: 50px;
-  border: 5px solid red;
-  justify-content: space-between;
+  height: 60px;
+  border: 1px solid red;
+  justify-content: space-evenly;
   display: flex;
   align-items: center;
 }
 
+#left-box,
+#center-box,
+#right-box {
+  width: auto;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+#center-box {
+  width: 60%;
+}
+
 /* 헤더바 안에 메뉴 토글 */
 #menu-toggle-Switch {
-  width: 40px;
+  width: 60px;
   height: 100%;
-  border: 2px solid green;
+
   border-radius: 100%;
+  background-image: url(imgs/menu-toggle-removebg-preview.png);
 }
 
 /* 헤더바 안에 로고 */
 
 #logo {
-  width: 120px;
+  width: 100px;
   height: 100%;
-  border: 2px solid green;
+
+  background: url(imgs/ytb_logo-removebg-preview.png);
 }
 
 /* 헤더바 안에 검색바 */
 
 #searchBar {
-  width: 500px;
-  height: 90%;
-  border: 3px solid green;
+  display: flex;
+  width: 90%;
+  height: 100%;
+  border: 1px solid lightgray;
   overflow: hidden;
   border-radius: 50px;
+  justify-content: space-between;
 }
 
-#search-bar-logo {
-  width: 150px;
+/* 검색 창 */
+#search {
+  background-color: red;
+  /* width: 100%; */
+  width: calc(100% - 50px);
   height: 100%;
-  border-left: 1px solid black;
+}
+
+/* 검색 이미지 */
+#search-bar-logo {
+  min-width: 50px;
+  height: 100%;
+  border-left: 1px solid lightgray;
+  position: relative;
+  right: 0;
+
+  background: url(imgs/search_logo-removebg-preview.png);
+}
+/* 마이크 로고 */
+#mike-logo {
+  width: 10%;
+  min-width: 60px;
+  height: 100%;
+
+  background: url(imgs/mike_img-removebg-preview.png);
+}
+
+/*오른쪽 박스 */
+#right-box {
+  overflow: hidden;
+}
+
+#option,
+#login {
+  min-width: 30px;
+}
+
+#option {
+  background: url(imgs/option.png);
+}
+/* 로그인 박스 */
+#login {
+  width: 150px;
+  text-align: center;
+  align-items: center;
+  border-radius: 30px;
+  border: 1px solid gray;
+}
+#login-text {
+  width: 10%;
+  min-width: 50px;
+  height: 100%;
+  line-height: 60px;
+  margin: auto;
+}
+
+/* 이미지 포지션 맨 아래 */
+#menu-toggle-Switch,
+#logo,
+#search-bar-logo,
+#mike-logo,
+#option {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position-y: center;
+}
+
+/*  */
+/*  */
+/*  */
+
+#body-bar {
+  width: auto;
+  height: 100%;
+  border: 1px solid red;
+}
+
+#left-side-bar {
+  border: 1px solid black;
+  width: 70px;
+  height: auto;
+}
+
+/* 박스들 클래스 */
+.side-boxs {
+  width: 100%;
+  height: 70px;
+  border: 1px solid orange;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
