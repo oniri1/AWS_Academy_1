@@ -6,15 +6,24 @@ class Makers {
   className;
   classNameArr;
   //배열로 받은 str을 요소 이름으로 반환하여 리턴
-  arrDiv(divName, className) {
+  arrDiv(divName, className, createEle) {
     this.classNameArr = className;
+
+    // console.log("@@@@@@@@@@@@@@", this.classNameArr);
+
     const test = divName.map((divName) => {
       const divNameEle = document.createElement("div");
       // console.log("className", this.classNameArr);
       divNameEle.id = `${divName}`;
 
       if (this.classNameArr != undefined) {
-        divNameEle.classList.add(this.classNameArr);
+        if (Array.isArray(this.classNameArr)) {
+          for (let i = 0; i < this.classNameArr.length; i++) {
+            divNameEle.classList.add(this.classNameArr[i]);
+          }
+        } else {
+          divNameEle.classList.add(this.classNameArr);
+        }
       }
       // console.log("요소 확인!!!!", divNameEle);
       return divNameEle;
@@ -22,7 +31,7 @@ class Makers {
     return test;
   }
 
-  appendDiv(rootName, divName, className) {
+  appendDiv(rootName, divName, className, createEle) {
     //정상작동시 코드
     //자식을 가질 부모의 이름
     let rootNameEle = document.getElementById(`${rootName}`);
@@ -58,13 +67,19 @@ class Makers {
       }
 
       if (this.className != undefined) {
-        divNameEle.classList.add(this.className);
+        if (Array.isArray(this.className)) {
+          for (let i = 0; i < this.className.length; i++) {
+            divNameEle.classList.add(this.className[i]);
+          }
+        } else {
+          divNameEle.classList.add(this.className);
+        }
       }
       rootNameEle.append(divNameEle);
     }
   }
 
-  makeIdDiv(rootName, divName, className) {
+  makeIdDiv(rootName, divName, className, createEle) {
     this.className = className;
     //값을 입력하지 않았을 시 종료
     if (rootName == undefined && divName == undefined) {
@@ -103,7 +118,13 @@ class Makers {
           const divNameEle = document.createElement("div");
           divNameEle.id = `${rootName}`;
           if (this.className != undefined) {
-            divNameEle.classList.add(this.className);
+            if (Array.isArray(this.className)) {
+              for (let i = 0; i < this.className.length; i++) {
+                divNameEle.classList.add(this.className[i]);
+              }
+            } else {
+              divNameEle.classList.add(this.className);
+            }
           }
           body.prepend(divNameEle);
         }
@@ -170,25 +191,10 @@ for (let i = 0; i < sideBoxs.length; i++) {
 
 // makers.makeIdDiv("main", "img-box-container");
 
-makers.makeIdDiv("img-box-container", null, "img-boxs");
-makers.makeIdDiv("img-boxs", "box1");
-makers.makeIdDiv("img-boxs", "box2");
-
-makers.makeIdDiv("img-box-container", null, "img-boxs");
-makers.makeIdDiv("img-boxs", "box1");
-makers.makeIdDiv("img-boxs", "box2");
-
-makers.makeIdDiv("img-box-container", null, "img-boxs");
-makers.makeIdDiv("img-boxs", "box1");
-makers.makeIdDiv("img-boxs", "box2");
-
-makers.makeIdDiv("img-box-container", null, "img-boxs");
-makers.makeIdDiv("img-boxs", "box1");
-makers.makeIdDiv("img-boxs", "box2");
-
-makers.makeIdDiv("img-box-container", null, "img-boxs");
-makers.makeIdDiv("img-boxs", "box1");
-makers.makeIdDiv("img-boxs", "box2");
+// 박스 생성
+// makers.makeIdDiv("img-box-container", null, "img-boxs");
+// makers.makeIdDiv("img-boxs", "box1");
+// makers.makeIdDiv("img-boxs", "box2");
 
 //옵저버
 
@@ -220,29 +226,55 @@ makers.makeIdDiv("img-boxs", "box2");
 // //   });
 // // };
 
-// const callback = (entries, observer) => {
-//   console.log(entries);
-//   entries.forEach((entry) => {
-//     if (entry.isIntersecting) {
-//       console.log("hi");
-//       console.log(entry.isIntersecting);
+//무조건 한번 실행함
+const callback = (entries, observer) => {
+  // console.log(entries);
 
-//       console.log(entry.intersectionRatio);
+  // console.log(Math.floor(entries[0].rootBounds.width / 250));
+  // console.log(Math.floor(entries[0].rootBounds.height / 250));
 
-//       console.log(entry.rootBounds);
+  // console.log("이거 두번 실행 돼?");
+  entries.forEach((entry) => {
+    //옵저버 대상이 보이면 true
+    if (entry.isIntersecting) {
+      // console.log("hi");
+      // console.log(entry.isIntersecting);
 
-//       // 교차가 되었을때 true
+      // console.log(entry.intersectionRatio);
 
-//       console.log("entry", entry);
-//       console.log("call back observer", observer);
-//       observer.unobserve(entry.target); // 관찰 해제로 한번만 실행
-//     }
-//   });
-// };
+      // console.log(entry.rootBounds);
 
-// const observer = new IntersectionObserver(callback, options);
+      for (
+        let i = 0;
+        i <
+        Math.floor(
+          (entries[0].rootBounds.height / 250) *
+            (entries[0].rootBounds.width / 250)
+        );
+        i++
+      ) {
+        makers.makeIdDiv("img-box-container", null, ["img-boxs", "hi"]);
+        makers.makeIdDiv("img-boxs", "box1");
+        makers.makeIdDiv("img-boxs", "box2");
+      }
 
-// observer.observe(document.getElementById("footer"));
+      // 교차가 되었을때 true
+
+      // console.log("entry", entry);
+      // console.log("call back observer", observer);
+      // observer.unobserve(entry.target); // 관찰 해제로 한번만 실행
+    }
+  });
+};
+
+//일단 한번 콜백함수를 실행하고, 옵션 쪽이 될 때 마다 실행한다.
+const observer = new IntersectionObserver(callback, { threshold: 0.5 });
+
+observer.observe(document.getElementById("footer"));
+
+makers.makeIdDiv("img-box-container", null, "img-boxs");
+makers.makeIdDiv("img-boxs", "box1");
+makers.makeIdDiv("img-boxs", "box2");
 
 //
 //
@@ -316,3 +348,9 @@ makers.makeIdDiv("img-boxs", "box2");
 // };
 
 // startup();
+
+const searchbar = document.getElementById("search");
+
+//서치로 바꿈
+searchbar.attributes[0].ownerElement.outerHTML =
+  "<input type='search' id='search'></input>";
